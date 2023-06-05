@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.goofy.goober.androidtemplate">
-
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:name=".ui.TemplateApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AndroidTemplate">
+        android:theme="@style/SketchTheme"
+        android:hardwareAccelerated="true">
         <activity
-            android:name=".ui.TemplateActivity"
+            android:name=".activity.SketchActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/Theme.AndroidTemplate.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,6 +18,4 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-
 </manifest>

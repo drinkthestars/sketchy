@@ -1,18 +1,16 @@
 plugins {
     id(libs.plugins.android.application.get().pluginId)
     id(libs.plugins.kotlin.android.get().pluginId)
-    id(libs.plugins.hilt.android.get().pluginId)
-    id(libs.plugins.kapt.get().pluginId)
 }
 
 android {
     compileSdk = libs.versions.compileSdk.get().toInt()
     buildToolsVersion = libs.versions.build.tools.get()
-    namespace = "com.goofy.goober.androidtemplate"
+    namespace = "com.goofy.goober.sketch"
 
     defaultConfig {
         applicationId = "com.goofy.goober.androidtemplate"
-        minSdk = 24
+        minSdk = 33
         targetSdk = 33
         versionCode = 1
         versionName = "1.0.0"
@@ -54,14 +52,14 @@ android {
 }
 
 dependencies {
+    implementation(project(":shaders"))
+    implementation(project(":sketch"))
+    implementation(project(":style"))
     implementation(libs.bundles.androidx)
-    implementation(libs.bundles.coil)
     implementation(libs.bundles.compose)
-    implementation(libs.bundles.hilt)
     implementation(libs.bundles.kotlin)
     implementation(libs.bundles.google)
-
-    kapt(libs.hilt.compiler)
+    debugImplementation(libs.compose.ui.tooling)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
