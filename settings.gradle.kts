@@ -1,4 +1,4 @@
-rootProject.name = "compose-sketch-basics"
+rootProject.name = "sketchy"
 
 include(":app")
 

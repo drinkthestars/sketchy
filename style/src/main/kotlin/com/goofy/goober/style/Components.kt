@@ -117,7 +117,7 @@ fun SmallCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(Space.Five),
+                .padding(Sizing.Five),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -127,7 +127,7 @@ fun SmallCard(
                 text = title
             )
             Icon(
-                modifier = Modifier.padding(end = Space.Five),
+                modifier = Modifier.padding(end = Sizing.Five),
                 imageVector = Icons.Filled.ArrowRight,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurface
@@ -153,7 +153,7 @@ fun ShadyContainer(
             modifier = Modifier
                 .fillMaxSize()
                 .weight(0.8f)
-                .padding(Space.Five)
+                .padding(Sizing.Five)
                 .clip(LargeCardShape)
                 .background(color = MaterialTheme.colorScheme.surfaceVariant),
             content = content
@@ -161,18 +161,18 @@ fun ShadyContainer(
         Divider(
             Modifier
                 .fillMaxWidth()
-                .padding(vertical = Space.Five)
+                .padding(vertical = Sizing.Five)
         )
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .weight(0.2f)
-                .padding(horizontal = Space.Five),
+                .padding(horizontal = Sizing.Five),
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = Space.Five)
+                    .padding(horizontal = Sizing.Five)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
@@ -185,7 +185,7 @@ fun ShadyContainer(
 @Composable
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_MASK)
 fun ShadyContainerPreview() {
-    SketchTheme {
+    SketchyTheme {
         ShadyContainer(
             content = {
                 Box(
@@ -210,16 +210,24 @@ fun Slider(
     value: Float = 0.5f,
     valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
     steps: Int = 0,
+    enabled: Boolean = true,
     onValueChange: (Float) -> Unit = {},
 ) {
-    Column(modifier) {
+    Column(
+        modifier
+            .wrapContentSize()
+            .padding(Sizing.Three),
+        horizontalAlignment = Alignment.Start,
+    ) {
         Text(
-            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(horizontal = Sizing.Four),
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface,
             text = label
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(Sizing.One))
         Slider(
+            enabled = enabled,
             value = value,
             onValueChange = onValueChange,
             valueRange = valueRange,
@@ -235,18 +243,24 @@ fun IntSlider(
     value: Int = 0,
     valueRange: ClosedRange<Int> = 0..5,
     steps: Int = valueRange.endInclusive - valueRange.start,
-    onValueChange: (Float) -> Unit = {},
+    onValueChange: (Int) -> Unit = {},
 ) {
-    Column(modifier) {
+    Column(
+        modifier
+            .wrapContentSize()
+            .padding(Sizing.Three),
+        horizontalAlignment = Alignment.Start
+    ) {
         Text(
-            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(horizontal = Sizing.Four),
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface,
             text = label
         )
         Spacer(Modifier.height(4.dp))
         Slider(
             value = value.toFloat(),
-            onValueChange = onValueChange,
+            onValueChange = { onValueChange(it.toInt()) },
             valueRange = valueRange.start.toFloat().rangeTo(valueRange.endInclusive.toFloat()),
             steps = steps
         )
@@ -257,7 +271,7 @@ fun IntSlider(
 @Composable
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_MASK)
 fun SmallCardColumnPreview() {
-    SketchTheme {
+    SketchyTheme {
         Column(
             Modifier
                 .fillMaxSize()
@@ -280,7 +294,7 @@ fun SmallCardColumnPreview() {
 @Composable
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_MASK)
 fun LargeCardColumnPreview() {
-    SketchTheme {
+    SketchyTheme {
         Column(
             Modifier
                 .fillMaxSize()

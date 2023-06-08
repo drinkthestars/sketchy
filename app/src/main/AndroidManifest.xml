@@ -9,7 +9,7 @@
         android:theme="@style/SketchTheme"
         android:hardwareAccelerated="true">
         <activity
-            android:name=".activity.SketchActivity"
+            android:name=".activity.SketchyActivity"
             android:label="@string/title_activity_main"
             android:exported="true">
             <intent-filter>

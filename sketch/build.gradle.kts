@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.goofy.goober.shaders"
+    namespace = "com.goofy.goober.sketch"
     compileSdk = 33
 
     defaultConfig {

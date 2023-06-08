@@ -6,10 +6,10 @@ plugins {
 android {
     compileSdk = libs.versions.compileSdk.get().toInt()
     buildToolsVersion = libs.versions.build.tools.get()
-    namespace = "com.goofy.goober.sketch"
+    namespace = "com.goofy.goober.sketchy"
 
     defaultConfig {
-        applicationId = "com.goofy.goober.androidtemplate"
+        applicationId = "com.goofy.goober.sketchy"
         minSdk = 33
         targetSdk = 33
         versionCode = 1

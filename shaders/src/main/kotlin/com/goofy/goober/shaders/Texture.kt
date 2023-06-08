@@ -3,33 +3,55 @@ package com.goofy.goober.shaders
 import android.graphics.RuntimeShader
 import org.intellij.lang.annotations.Language
 
+val SimpleShader = RuntimeShader(
+    """
+    uniform float2 resolution;
+    uniform shader image; 
+    
+    vec4 main( vec2 fragCoord ) {
+        // Normalized pixel coordinates (from 0 to 1)
+        vec2 uv = fragCoord / resolution.xy;
+        
+        // Output to screen
+        return vec4(uv.x, uv.y, 0.0, 1.0);
+    }
+    """.trimIndent()
+)
+
 /**
  * Tweaked from: https://www.shadertoy.com/view/3sGGRz Created by terchapone
  */
-val NoiseGrain1 = RuntimeShader(
+val NoiseGrain1 = RuntimeShader( /** shader code **/
     """
     uniform float2 resolution;
     uniform shader image; 
     uniform float intensity;
     
-    vec4 main( vec2 fragCoord )
-    {
+    vec4 main( vec2 fragCoord ) {
         vec2 uv = fragCoord/resolution.xy;
         
-        // Check if pixel is inside viewport bounds
+        // check if pixel is inside viewport bounds
         if (fragCoord.x < 0.0 || fragCoord.x > resolution.x || fragCoord.y < 0.0 || fragCoord.y > resolution.y) {
             return vec4(image.eval(fragCoord));
         }
-
-        float mdf = -0.8 * intensity; // increase for noise amount 
+        
+        // 1. create noise…
+        float noiseFactor = -0.8 * intensity; // increase for noise amount 
         float noise = (fract(sin(dot(uv, vec2(12.9898,78.233)*2.0)) * 43758.5453));
-        vec4 tex = vec4(image.eval(fragCoord));
         
-        mdf *= 1.5;
+        // 2. get color of image at fragCoord
+        vec4 inputCol = vec4(image.eval(fragCoord));
         
-        vec4 col = tex - noise * mdf;
-
-        return col;
+        // 3. mix noise with image color
+        noiseFactor *= 0.6; // adjust noise factor
+        
+        vec4 noiseCol = vec4(vec3(noise * noiseFactor), 0.0);
+        
+        vec4 finalCol = mix(inputCol, inputCol - noiseCol, 0.6); // Apply half of the noise reduction
+        finalCol += inputCol * 0.1; // Add 10% of original color back to brighten it up
+     
+        finalCol.a = inputCol.a; // Keep the original alpha value
+        return finalCol;
     }
     """.trimIndent()
 )
@@ -65,10 +87,10 @@ val NoiseGrain2 = RuntimeShader(
         vec2 uvRandom = uv;
         float amount = 0.2;
         uvRandom.y *= random(vec2(uvRandom.y,amount));
-        vec4 tex = vec4(image.eval(fragCoord));
-        tex.rgb += random(uvRandom)*intensity;
+        vec4 inputColor = vec4(image.eval(fragCoord));
+        inputColor.rgb += random(uvRandom)*intensity;
     
-        return vec4(tex);
+        return vec4(inputColor);
     }
     """.trimIndent()
 )
@@ -113,14 +135,14 @@ val Risograph = RuntimeShader(
         vec2 uvRandom = uv;
         float amount = 0.8;
         uvRandom.y *= noise(vec2(uvRandom.y,amount));
-        vec4 tex = vec4(image.eval(fragCoord));
-        vec4 originalTex = tex;
-        tex.rgb += random(uvRandom) * randomization + randomizationOffset;
+        vec4 inputColor = vec4(image.eval(fragCoord));
+        vec4 originalinputColor = inputColor;
+        inputColor.rgb += random(uvRandom) * randomization + randomizationOffset;
       
         
-        float r = max(tex.r, originalTex.r);
-        float g = max(tex.g, originalTex.g);
-        float b = max(tex.b, originalTex.b);
+        float r = max(inputColor.r, originalinputColor.r);
+        float g = max(inputColor.g, originalinputColor.g);
+        float b = max(inputColor.b, originalinputColor.b);
         float a = 1.0;
       
         return vec4(r, g, b, a);
@@ -134,7 +156,7 @@ val Risograph = RuntimeShader(
  * - https://lygia.xyz/
  * - https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83 by patriciogonzalezvivo
  */
-val MarbledTexture = RuntimeShader(
+val MarbledinputColorture = RuntimeShader(
     """
         uniform float2 resolution;
         uniform shader image; 
@@ -213,7 +235,7 @@ val MarbledTexture = RuntimeShader(
  * - https://lygia.xyz/
  * - https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83 by patriciogonzalezvivo
  */
-val SketchingPaperTexture = RuntimeShader(
+val SketchingPaperinputColorture = RuntimeShader(
     """
         uniform float2 resolution;
         uniform shader image; 
@@ -273,10 +295,10 @@ val SketchingPaperTexture = RuntimeShader(
             dotPattern = pow(dotPattern, contrast2); // Increase contrast
         
             // Combine the noise and dot pattern
-            float combinedTexture = mix(noise, dotPattern, 0.6);
+            float combinedinputColorture = mix(noise, dotPattern, 0.6);
         
-            // Apply the texture to the base color
-            half4 outputColor = baseColor + half4(combinedTexture, combinedTexture, combinedTexture, 0.0) * amount;
+            // Apply the inputColorture to the base color
+            half4 outputColor = baseColor + half4(combinedinputColorture, combinedinputColorture, combinedinputColorture, 0.0) * amount;
         
             return outputColor;
         }
@@ -287,7 +309,7 @@ val SketchingPaperTexture = RuntimeShader(
 /**
  * Messing around from other shaders here, plus ChatGPT!
  */
-val PaperTexture = RuntimeShader(
+val PaperinputColorture = RuntimeShader(
     """
     uniform float2 resolution;
     uniform shader image; 
