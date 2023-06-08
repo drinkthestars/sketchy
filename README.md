@@ -14,7 +14,7 @@ Polygons! | Texture Shaders! | Splatter!
 <video src="https://github.com/drinkthestars/sketchy/assets/2978958/1f3abb36-a4b7-4ebc-a39f-6f69b1267203" /> | <video src="https://github.com/drinkthestars/sketchy/assets/2978958/d3ffa56f-c0d7-4a7c-bd5a-a7390e6d1ad9" /> | <video src="https://github.com/drinkthestars/sketchy/assets/2978958/4620e473-f664-4552-a8eb-039bc110df49" />
 
 ### 🔍 Explore More
-If you found Sketchy intriguing and want to explore more creative coding repositories, check out [Shady](https://github.com/drinkthestars/shady) an ASGL shader gallery! Feel free to dive in, play around, and contribute!
+If you found Sketchy intriguing and want to explore more creative coding repositories, check out [Shady](https://github.com/drinkthestars/shady), an ASGL shader gallery! Feel free to dive in, play around, and contribute!
 
 ### 📚 Resources
 The talk and the samples in this repository were greatly influenced and inspired by several resources dedicated to creative coding. Here are a few recommendations to extend your learning:
