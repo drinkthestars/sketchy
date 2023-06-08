@@ -22,12 +22,13 @@ The talk and the samples in this repository were greatly influenced and inspired
 - [Genuary](https://genuary.art/): An annual generative art event, with new prompts every day of January to inspire and challenge you.
 - The Coding Train: A YouTube channel by Daniel Shiffman that offers creative coding tutorials that are fun, informative, and engaging. [Watch here](https://www.youtube.com/@TheCodingTrain).
 - Form+Code by Casey Reas and Chandler McWilliams: This book explores the possibilities of software within the realm of design and art. It's a great resource to understand the concepts and theory behind creative coding. [Get the book here](https://www.amazon.com/Form-Code-Design-Architecture-Briefs/dp/1568989377).
-- T[he Book of Shaders](https://thebookofshaders.com/) by Patricio Gonzalez Vivo and Jen Lowe is an essential guide to understanding and writing shaders.
+- [The Book of Shaders](https://thebookofshaders.com/) by Patricio Gonzalez Vivo and Jen Lowe is an essential guide to understanding and writing shaders.
 - [Matt DesLauriers's Creative Coding Course](https://frontendmasters.com/courses/canvas-webgl/) is a fantastic place to learn creative coding with JavaScript, Canvas and WebGL.
 - [Generative Art by Inconvergent](https://inconvergent.net/generative/) provides a great introduction to generative algorithms and their application in creative coding.
 - Explore the works of [Vera Molnar](https://www.dam-gallery.de/artist/Vera_Molnar), one of the pioneers of computer and algorithmic arts.
 - Delve into the abstract and geometric paintings of [Hilma af Klint](https://www.guggenheim.org/exhibition/hilma-af-klint), a visionary artist who created compositions that often resemble outputs of generative algorithms.
 - Discover [Sol LeWitt](https://www.moma.org/artists/3542), known for his work in conceptual art and minimalism, often using systems and seriality that resonate with the logic of creative coding. Also, check out [Solving Sol](https://www.solvingsol.com/), an open challenge to implement Sol's instructional art pieces in any language or medium.
 
-✨ Happy coding!
+### 🎉 Your Opinions Matter! 
 
+Did you attend the Creative Coding with Compose talk at Droidcon SF '23? If so, would love to hear what you thought! Please share your feedback, suggestions for improvement, or ideas for future topics through our [feedback form]([link to feedback for](https://forms.gle/4EghTET1CdKGgyvdA)m).
