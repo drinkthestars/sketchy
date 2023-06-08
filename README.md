@@ -1,6 +1,5 @@
-# 
+# Sketchy
 
-![build](https://github.com/drinkthestars/android-template/actions/workflows/android.yml/badge.svg)
+![build](https://github.com/drinkthestars/sketchy/actions/workflows/android.yml/badge.svg)
 
-
-A quick template for Android projects using Jetpack Compose.
+Sketchy is a creative coding playground for Compose!
