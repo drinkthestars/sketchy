@@ -1,4 +1,4 @@
-# Sketchy
+# ✨ Sketchy
 
 ![build](https://github.com/drinkthestars/sketchy/actions/workflows/android.yml/badge.svg)
 
