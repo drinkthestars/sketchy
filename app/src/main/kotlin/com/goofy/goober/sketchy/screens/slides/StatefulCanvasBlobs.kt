@@ -30,6 +30,7 @@ import com.goofy.goober.sketchy.common.Bg1
 import com.goofy.goober.sketchy.common.InteractiveContainer
 import com.goofy.goober.sketchy.common.Palette3
 import com.goofy.goober.sketchy.common.RandomBlobs
+import com.goofy.goober.sketchy.common.splatter
 import com.goofy.goober.sketchy.nextFloat
 import com.goofy.goober.style.IntSlider
 import com.goofy.goober.style.Sizing
@@ -86,26 +87,25 @@ fun StatefulCanvasBlobs(modifier: Modifier = Modifier) {
                 val (width, height) = size
                 with(randomBlobs) {
                     repeat(count) {
-                        val centerX =
-                            Random.nextFloat(min = 0f, max = width)
-                        val centerY =
-                            Random.nextFloat(min = 0f, max = height)
-//
-//                            splatter(
-//                                center = Offset(centerX, centerY),
-//                                color = color,
-//                                maxRadius = Random.nextFloat(min = 0f, max = MaxSize),
-//                                droplets = Random.nextInt(from = 23, until = 50)
-//                            )
-//                        val path = Path()
-                        drawCircle(
-                            center = Offset(centerX, centerY),
-                            color = color,
-                            radius = Random.nextFloat(min = 0f, max = 100f),
-//                            path= path,
-//                            vertices = 6,
-                            blendMode = BlendMode.Xor
-                        )
+                        val centerX = Random.nextFloat(min = 0f, max = width)
+                        val centerY = Random.nextFloat(min = 0f, max = height)
+
+                            splatter(
+                                center = Offset(centerX, centerY),
+                                color = color,
+                                maxRadius = Random.nextFloat(min = 0f, max = MaxSize),
+                                droplets = Random.nextInt(from = 23, until = 50)
+                            )
+
+                        // Uncomment this for regular circles
+//                        drawCircle(
+//                            center = Offset(centerX, centerY),
+//                            color = color,
+//                            radius = Random.nextFloat(min = 0f, max = 100f),
+////                            path= path,
+////                            vertices = 6,
+//                            blendMode = BlendMode.Xor
+//                        )
                     }
                 }
             }
