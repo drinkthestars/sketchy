@@ -34,4 +34,4 @@ The talk and the samples in this repository were greatly influenced and inspired
 
 ### 🎉 Your Opinions Matter! 
 
-Did you attend the Creative Coding with Compose talk at Droidcon SF '23? If so, would love to hear what you thought! Please share your feedback, suggestions for improvement, or ideas for future topics through our [feedback form]([link to feedback for](https://forms.gle/4EghTET1CdKGgyvdA)m).
+Did you attend the Creative Coding with Compose talk at Droidcon SF '23? If so, would love to hear what you thought! Please share your feedback, suggestions for improvement, or ideas for future topics through our [feedback form](https://forms.gle/4EghTET1CdKGgyvdA).
