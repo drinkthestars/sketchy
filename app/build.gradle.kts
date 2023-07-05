@@ -52,6 +52,10 @@ android {
     android.sourceSets.all {
         java.srcDir("src/$name/kotlin")
     }
+
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
 }
 
 dependencies {

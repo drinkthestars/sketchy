@@ -28,7 +28,7 @@ import com.goofy.goober.sketchy.screens.Polygons
 import com.goofy.goober.sketchy.screens.PolygonsInteractive
 import com.goofy.goober.sketchy.screens.PolygonsTouchInteractive
 import com.goofy.goober.sketchy.screens.Quads
-import com.goofy.goober.sketchy.screens.StatefulCanvasBlobs
+import com.goofy.goober.sketchy.screens.slides.StatefulCanvasBlobs
 import com.goofy.goober.sketchy.screens.TexturingHexagons
 import com.goofy.goober.sketchy.screens.TexturingInteractivePolygons
 import com.goofy.goober.sketchy.screens.Triangles

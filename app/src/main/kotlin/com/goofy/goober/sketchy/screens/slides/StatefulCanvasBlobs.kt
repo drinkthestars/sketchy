@@ -1,4 +1,4 @@
-package com.goofy.goober.sketchy.screens
+package com.goofy.goober.sketchy.screens.slides
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -34,8 +34,8 @@ import com.goofy.goober.style.IntSlider
 import com.goofy.goober.style.Sizing
 import kotlin.random.Random
 
-private val MaxSize = 180f
-private val MinCount = 10
+private const val MaxSize = 180f
+private const val MinCount = 10
 
 @Preview(showBackground = true)
 @Composable
@@ -59,7 +59,8 @@ fun StatefulCanvasBlobs(modifier: Modifier = Modifier) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()) {
+                .wrapContentHeight()
+        ) {
             Box(
                 modifier
                     .size(24.dp)
@@ -88,12 +89,12 @@ fun StatefulCanvasBlobs(modifier: Modifier = Modifier) {
                         val centerX = Random.nextFloat(min = 0f, max = width)
                         val centerY = Random.nextFloat(min = 0f, max = height)
 
-                            splatter(
-                                center = Offset(centerX, centerY),
-                                color = color,
-                                maxRadius = Random.nextFloat(min = 0f, max = MaxSize),
-                                droplets = Random.nextInt(from = 23, until = 50)
-                            )
+                        splatter(
+                            center = Offset(centerX, centerY),
+                            color = color,
+                            maxRadius = Random.nextFloat(min = 0f, max = MaxSize),
+                            droplets = Random.nextInt(from = 23, until = 50)
+                        )
 
                         // Uncomment this for regular circles
 //                        drawCircle(
