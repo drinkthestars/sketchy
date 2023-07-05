@@ -44,8 +44,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import com.goofy.goober.sketchy.capture.captureAndShare
-import com.goofy.goober.style.Slider
 import com.goofy.goober.style.Sizing
+import com.goofy.goober.style.Slider
 import kotlinx.coroutines.launch
 
 @Composable

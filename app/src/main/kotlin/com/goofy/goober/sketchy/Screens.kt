@@ -5,8 +5,11 @@ import com.goofy.goober.sketchy.HomeScreens.CanvasDrawing
 import com.goofy.goober.sketchy.HomeScreens.CanvasRedrawing
 import com.goofy.goober.sketchy.HomeScreens.DrawingShapes
 import com.goofy.goober.sketchy.HomeScreens.DrawingShapesInteractive
+import com.goofy.goober.sketchy.HomeScreens.Grids
 import com.goofy.goober.sketchy.HomeScreens.ImageRemixing
 import com.goofy.goober.sketchy.HomeScreens.ImageSampling
+import com.goofy.goober.sketchy.HomeScreens.Oscillations
+import com.goofy.goober.sketchy.HomeScreens.Particles
 import com.goofy.goober.sketchy.HomeScreens.Slides
 import com.goofy.goober.sketchy.HomeScreens.Texturing
 import com.goofy.goober.sketchy.scaffolding.DestinationScreen
@@ -37,24 +40,67 @@ import com.goofy.goober.sketchy.screens.slides.GeneratePositions
 import com.goofy.goober.sketchy.screens.slides.GenerateRandomly
 import com.goofy.goober.sketchy.screens.slides.OutOfBoxShapes
 import com.goofy.goober.sketchy.screens.slides.TransformWithTexture
+import com.goofy.goober.sketchy.temp.dots.BasicGrid
+import com.goofy.goober.sketchy.temp.dots.Dot2DNoiseRadius
+import com.goofy.goober.sketchy.temp.dots.Dot4DNoiseOffset
+import com.goofy.goober.sketchy.temp.dots.DotAnimatedRadiusAndCenterVariation
+import com.goofy.goober.sketchy.temp.dots.DotAnimatedRadiusAndOffset
+import com.goofy.goober.sketchy.temp.dots.DotParametric
+import com.goofy.goober.sketchy.temp.dots.DotSinRadiusVariation
+import com.goofy.goober.sketchy.temp.dots.DotStaticXRadiusVariation
+import com.goofy.goober.sketchy.temp.dots.DotStaticYRadiusVariation
+import com.goofy.goober.sketchy.temp.dots.DotYPendulum
+import com.goofy.goober.sketchy.temp.dots.DotYSpread
+import com.goofy.goober.sketchy.temp.dots.DotsAroundCircleHalftones
+import com.goofy.goober.sketchy.temp.dots.DotsAroundCircleWavy
+import com.goofy.goober.sketchy.temp.dots.DotsStaticXYRadiusVariation
+import com.goofy.goober.sketchy.temp.dots.HueNoisyUVMesh
+import com.goofy.goober.sketchy.temp.dots.HueNoisyXYMesh
+import com.goofy.goober.sketchy.temp.dots.Lines2DNoise
+import com.goofy.goober.sketchy.temp.dots.Lines3DNoise
+import com.goofy.goober.sketchy.temp.dots.Lines4DNoise
+import com.goofy.goober.sketchy.temp.dots.MonotoneNoisyUVMesh
+import com.goofy.goober.sketchy.temp.dots.MonotoneNoisyXYMesh
+import com.goofy.goober.sketchy.temp.dots.Noise2DGrowingDots
+import com.goofy.goober.sketchy.temp.dots.Noise3DGrowingDots
+import com.goofy.goober.sketchy.temp.dots.NoisyPoints
+import com.goofy.goober.sketchy.temp.dots.NoisyXYRandomRectMesh
+import com.goofy.goober.sketchy.temp.dots.NoisyXYRectMesh
+import com.goofy.goober.sketchy.temp.dots.Random2DDots
+import com.goofy.goober.sketchy.temp.dots.Random2DGrowingDots
+import com.goofy.goober.sketchy.temp.imageproc.ImageSampling
+import com.goofy.goober.sketchy.temp.imageproc.ImageSamplingGestures
+import com.goofy.goober.sketchy.temp.osc.Harmonic
+import com.goofy.goober.sketchy.temp.osc.ParametricHarmonic
+import com.goofy.goober.sketchy.temp.particles.Attractor
+import com.goofy.goober.sketchy.temp.particles.Constellation
+import com.goofy.goober.sketchy.temp.particles.FlowField
+import com.goofy.goober.sketchy.temp.particles.RasterizeAttractor
 
 object HomeScreens {
     const val Home = "Sketch"
     const val CanvasDrawing = "Basic Canvas Drawing"
+    const val CanvasRedrawing = "Redrawing"
+    const val Grids = "Grids full of dots"
     const val DrawingShapes = "Shapes"
     const val DrawingShapesInteractive = "Interactive Shapes"
-    const val CanvasRedrawing = "Redrawing"
-    const val ImageSampling = "Image Sampling"
     const val ImageRemixing = "Image Remixing"
-    const val Texturing = "Texturing"
+    const val ImageSampling = "Image Sampling"
+    const val Oscillations = "Oscillations"
+    const val Particles = "Particles"
     const val Slides = "Creative Coding '23"
+    const val Texturing = "Texturing"
 }
 
 val TopLevelScreens = listOf(
     NestedNavScreen(
-        title = Slides,
-        description = "Specific Examples from the Creative Coding Compose '23 talk"
-    ) { onNavigate -> slidesImagesGraph(onNavigate) },
+        title = Grids,
+        description = "Groovy grids!"
+    ) { onNavigate -> gridsGraph(onNavigate) },
+    NestedNavScreen(
+        title = Oscillations,
+        description = "Oscillations with trig"
+    ) { onNavigate -> oscillationsGraph(onNavigate) },
     DestinationScreen(
         title = CanvasDrawing,
         description = "Showcasing the coordinate system"
@@ -71,6 +117,14 @@ val TopLevelScreens = listOf(
         title = CanvasRedrawing,
         description = "Recording canvas drawing"
     ) { CanvasRedrawing() },
+    NestedNavScreen(
+        title = Particles,
+        description = "Basic particle systems"
+    ) { onNavigate -> particlesGraph(onNavigate) },
+    NestedNavScreen(
+        title = Slides,
+        description = "Specific Examples from the Creative Coding Compose '23 talk"
+    ) { onNavigate -> slidesGraph(onNavigate) },
     NestedNavScreen(
         title = ImageSampling,
         description = "Sampling input images"
@@ -129,13 +183,20 @@ private val ImageSamplingScreens = listOf(
     DestinationScreen(title = "Downsampled") {
         Downsampled()
     },
+    DestinationScreen(title = "Downsampled pt 2") {
+        ImageSampling()
+    },
     DestinationScreen(title = "Rasterized") {
         Rasterized()
     },
     DestinationScreen(title = "Rasterized Z Index") {
         RasterizedZIndex()
     },
-)
+    DestinationScreen(title = "Image sampling & gestures") {
+        ImageSamplingGestures()
+    },
+
+    )
 
 fun NavGraphBuilder.imageSamplingGraph(onNavigate: (Screen) -> Unit) {
     nestedContent(onNavigate, screens = ImageSamplingScreens, home = ImageSampling)
@@ -176,7 +237,7 @@ fun NavGraphBuilder.texturingGraph(onNavigate: (Screen) -> Unit) {
 //endregion
 
 //region Slides
-private val SlidesImages = listOf(
+private val SlidesScreens = listOf(
     DestinationScreen(title = "Form - Basic Shapes") {
         OutOfBoxShapes()
     },
@@ -200,7 +261,68 @@ private val SlidesImages = listOf(
     },
 )
 
-fun NavGraphBuilder.slidesImagesGraph(onNavigate: (Screen) -> Unit) {
-    nestedContent(onNavigate, screens = SlidesImages, home = Slides)
+fun NavGraphBuilder.slidesGraph(onNavigate: (Screen) -> Unit) {
+    nestedContent(onNavigate, screens = SlidesScreens, home = Slides)
+}
+//endregion
+
+//region Grids
+private val GridsScreens = listOf(
+    DestinationScreen(title = "BasicGrid") { BasicGrid() },
+    DestinationScreen(title = "MonotoneNoisyUVMesh") { MonotoneNoisyUVMesh() },
+    DestinationScreen(title = "MonotoneNoisyXYMesh") { MonotoneNoisyXYMesh() },
+    DestinationScreen(title = "HueNoisyUVMesh") { HueNoisyUVMesh() },
+    DestinationScreen(title = "HueNoisyXYMesh") { HueNoisyXYMesh() },
+    DestinationScreen(title = "NoisyXYRectMesh") { NoisyXYRectMesh() },
+    DestinationScreen(title = "NoisyXYRandomRectMesh") { NoisyXYRandomRectMesh() },
+    DestinationScreen(title = "NoisyPoints") { NoisyPoints() },
+    DestinationScreen(title = "Random2DDots") { Random2DDots() },
+    DestinationScreen(title = "Noise2DGrowingDots") { Noise2DGrowingDots() },
+    DestinationScreen(title = "Noise3DGrowingDots") { Noise3DGrowingDots() },
+    DestinationScreen(title = "Random2DGrowingDots") { Random2DGrowingDots() },
+    DestinationScreen(title = "DotStaticYRadiusVariation") { DotStaticYRadiusVariation() },
+    DestinationScreen(title = "DotStaticXRadiusVariation") { DotStaticXRadiusVariation() },
+    DestinationScreen(title = "DotsStaticXYRadiusVariation") { DotsStaticXYRadiusVariation() },
+    DestinationScreen(title = "DotYPendulum") { DotYPendulum() },
+    DestinationScreen(title = "DotYSpread") { DotYSpread() },
+    DestinationScreen(title = "DotSinRadiusVariation") { DotSinRadiusVariation() },
+    DestinationScreen(title = "DotAnimatedRadiusAndCenterVariation") { DotAnimatedRadiusAndCenterVariation() },
+    DestinationScreen(title = "Dot2DNoiseRadius") { Dot2DNoiseRadius() },
+    DestinationScreen(title = "Dot4DNoiseOffset") { Dot4DNoiseOffset() },
+    DestinationScreen(title = "Lines2DNoise") { Lines2DNoise() },
+    DestinationScreen(title = "Lines3DNoise") { Lines3DNoise() },
+    DestinationScreen(title = "Lines4DNoise") { Lines4DNoise() },
+    DestinationScreen(title = "DotAnimatedRadiusAndOffset") { DotAnimatedRadiusAndOffset() },
+    DestinationScreen(title = "DotParametric") { DotParametric() },
+    DestinationScreen(title = "DotsAroundCircleWavy") { DotsAroundCircleWavy() },
+    DestinationScreen(title = "DotsAroundCircleHalftones") { DotsAroundCircleHalftones() }
+)
+
+fun NavGraphBuilder.gridsGraph(onNavigate: (Screen) -> Unit) {
+    nestedContent(onNavigate, screens = GridsScreens, home = Grids)
+}
+//endregion
+
+//region Oscillations
+private val OscillationsScreens = listOf(
+    DestinationScreen(title = "ParametricHarmonic") { ParametricHarmonic() },
+    DestinationScreen(title = "Harmonic") { Harmonic() }
+)
+
+fun NavGraphBuilder.oscillationsGraph(onNavigate: (Screen) -> Unit) {
+    nestedContent(onNavigate, screens = OscillationsScreens, home = Oscillations)
+}
+//endregion
+
+//region Particles
+private val ParticlesScreens = listOf(
+    DestinationScreen(title = "Attractor") { Attractor() },
+    DestinationScreen(title = "RasterizeAttractor") { RasterizeAttractor() },
+    DestinationScreen(title = "FlowField") { FlowField() },
+    DestinationScreen(title = "Constellation") { Constellation() }
+)
+
+fun NavGraphBuilder.particlesGraph(onNavigate: (Screen) -> Unit) {
+    nestedContent(onNavigate, screens = ParticlesScreens, home = Particles)
 }
 //endregion

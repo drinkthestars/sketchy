@@ -1,5 +1,6 @@
 package com.goofy.goober.sketchy.scaffolding
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,8 +30,8 @@ import androidx.navigation.navigation
 import com.goofy.goober.sketchy.HomeScreens
 import com.goofy.goober.sketchy.TopLevelScreens
 import com.goofy.goober.style.LargeCard
-import com.goofy.goober.style.SketchyTheme
 import com.goofy.goober.style.Sizing
+import com.goofy.goober.style.SketchyTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
@@ -150,12 +151,14 @@ fun List(
 }
 
 @Composable
-private fun ThemedSystemBarIconsEffect() {
+private fun ThemedSystemBarIconsEffect(
+    isSystemInDarkTheme: Boolean = isSystemInDarkTheme()
+) {
     val systemUiController = rememberSystemUiController()
     DisposableEffect(Unit) {
         systemUiController.setSystemBarsColor(
             color = Color.Transparent,
-            darkIcons = true
+            darkIcons = !isSystemInDarkTheme
         )
         onDispose { }
     }

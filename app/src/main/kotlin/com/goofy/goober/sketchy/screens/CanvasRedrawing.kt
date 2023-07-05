@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -23,12 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.goofy.goober.sketchy.StatefulCanvas
-import com.goofy.goober.sketchy.TWO_PI
 import com.goofy.goober.sketchy.common.Bg1
 import com.goofy.goober.sketchy.common.InteractiveContainer
 import com.goofy.goober.sketchy.common.Palette3
@@ -36,8 +33,6 @@ import com.goofy.goober.sketchy.common.RandomBlobs
 import com.goofy.goober.sketchy.nextFloat
 import com.goofy.goober.style.IntSlider
 import com.goofy.goober.style.Sizing
-import kotlin.math.cos
-import kotlin.math.sin
 import kotlin.random.Random
 
 private val MaxSize = 180f

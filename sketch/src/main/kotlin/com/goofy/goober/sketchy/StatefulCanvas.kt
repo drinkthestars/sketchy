@@ -2,6 +2,7 @@ package com.goofy.goober.sketchy
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -36,6 +37,23 @@ fun StatefulCanvas(
                     drawImage(drawContext.imageBitmap)
                 }
             }
+    )
+}
+
+@Composable
+fun StatefulSketch(
+    modifier: Modifier = Modifier,
+    speed: Float = 1f,
+    drawState: DrawState = remember { DrawState() },
+    onDraw: DrawScope.(Float) -> Unit
+) {
+    val time by produceDrawLoopCounter(speed)
+    StatefulCanvas(
+        modifier = modifier,
+        drawState = drawState,
+        onDraw = {
+            onDraw(time)
+        }
     )
 }
 

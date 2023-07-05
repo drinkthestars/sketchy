@@ -17,8 +17,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.goofy.goober.sketchy.StatefulCanvas
 import com.goofy.goober.sketchy.PI
+import com.goofy.goober.sketchy.StatefulCanvas
 import com.goofy.goober.sketchy.common.Bg1
 import com.goofy.goober.sketchy.common.ColorPaletteViewer
 import com.goofy.goober.sketchy.common.InteractiveContainer
