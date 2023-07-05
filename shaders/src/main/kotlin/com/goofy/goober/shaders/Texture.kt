@@ -1,7 +1,6 @@
 package com.goofy.goober.shaders
 
 import android.graphics.RuntimeShader
-import org.intellij.lang.annotations.Language
 
 val SimpleShader = RuntimeShader(
     """

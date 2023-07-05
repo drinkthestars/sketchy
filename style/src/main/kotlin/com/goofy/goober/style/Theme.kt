@@ -1,5 +1,6 @@
 package com.goofy.goober.style
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
@@ -72,9 +73,10 @@ private val LightColors = darkColorScheme(
 
 @Composable
 fun SketchyTheme(
+    isSystemInDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colors = LightColors
+    val colors = if (isSystemInDarkTheme) DarkColors else LightColors
 
     MaterialTheme(
         colorScheme = colors,

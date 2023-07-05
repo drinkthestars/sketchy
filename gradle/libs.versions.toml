@@ -15,6 +15,7 @@ compose = "1.5.0-beta01"
 composeCompiler = "1.4.7"
 kotlin = "1.8.21"
 coroutines = "1.7.1"
+glm = "0.9.9.1-4"
 
 material = "1.9.0"
 compose-material3 = "1.2.0-alpha02"
@@ -43,6 +44,7 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlin-graphics-glm = { module = "kotlin.graphics:glm", version.ref = "glm" }
 
 google-android-material = { module = "com.google.android.material:material", version.ref = "material" }
 google-accompanist-systemui = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
@@ -83,6 +85,7 @@ google = [
 kotlin = [
     "kotlin-stdlib",
     "kotlin-coroutines-android",
+    "kotlin-graphics-glm",
 ]
 
 [plugins]

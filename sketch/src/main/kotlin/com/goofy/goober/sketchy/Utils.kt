@@ -21,10 +21,7 @@ fun lerp(norm: Float, min: Float, max: Float): Float {
 }
 
 fun Offset.distanceTo(offset2: Offset): Float {
-
     getDistanceSquared()
-
-
     val deltaX = offset2.x - this.x
     val deltaY = offset2.y - this.y
     return sqrt(deltaX * deltaX + deltaY * deltaY)
@@ -48,6 +45,22 @@ fun map(
     )
 }
 
-fun Int.map(sourceMin: Float, sourceMax: Float, destMin: Float, destMax: Float): Float {
-    return lerp(norm(this.toFloat(), sourceMin, sourceMax), destMin, destMax)
+fun Int.mapTo(sourceMin: Float, sourceMax: Float, destMin: Float, destMax: Float): Float {
+    return map(
+        value = this.toFloat(),
+        sourceMin = sourceMin,
+        sourceMax = sourceMax,
+        destMin = destMin,
+        destMax = destMax
+    )
+}
+
+fun Float.mapTo(sourceMin: Float, sourceMax: Float, destMin: Float, destMax: Float): Float {
+    return map(
+        value = this,
+        sourceMin = sourceMin,
+        sourceMax = sourceMax,
+        destMin = destMin,
+        destMax = destMax
+    )
 }
