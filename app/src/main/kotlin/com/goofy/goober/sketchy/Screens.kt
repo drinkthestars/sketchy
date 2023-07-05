@@ -9,9 +9,13 @@ import com.goofy.goober.sketchy.HomeScreens.Grids
 import com.goofy.goober.sketchy.HomeScreens.ImageRemixing
 import com.goofy.goober.sketchy.HomeScreens.ImageSampling
 import com.goofy.goober.sketchy.HomeScreens.Oscillations
+import com.goofy.goober.sketchy.HomeScreens.Other
 import com.goofy.goober.sketchy.HomeScreens.Particles
+import com.goofy.goober.sketchy.HomeScreens.PolarCoords
 import com.goofy.goober.sketchy.HomeScreens.Slides
 import com.goofy.goober.sketchy.HomeScreens.Texturing
+import com.goofy.goober.sketchy.other.MatrixRain
+import com.goofy.goober.sketchy.other.Starfield
 import com.goofy.goober.sketchy.scaffolding.DestinationScreen
 import com.goofy.goober.sketchy.scaffolding.NestedNavScreen
 import com.goofy.goober.sketchy.scaffolding.Screen
@@ -76,23 +80,34 @@ import com.goofy.goober.sketchy.temp.particles.Attractor
 import com.goofy.goober.sketchy.temp.particles.Constellation
 import com.goofy.goober.sketchy.temp.particles.FlowField
 import com.goofy.goober.sketchy.temp.particles.RasterizeAttractor
+import com.goofy.goober.sketchy.temp.polar.Blobby
+import com.goofy.goober.sketchy.temp.polar.BlobbyLoop
+import com.goofy.goober.sketchy.temp.polar.PolygonsColor
+import com.goofy.goober.sketchy.temp.polar.PolygonsComplex
+import com.goofy.goober.sketchy.temp.polar.PolygonsSimple
 
 object HomeScreens {
     const val Home = "Sketch"
     const val CanvasDrawing = "Basic Canvas Drawing"
     const val CanvasRedrawing = "Redrawing"
-    const val Grids = "Grids full of dots"
+    const val Grids = "Dippin' Dots"
     const val DrawingShapes = "Shapes"
     const val DrawingShapesInteractive = "Interactive Shapes"
     const val ImageRemixing = "Image Remixing"
     const val ImageSampling = "Image Sampling"
     const val Oscillations = "Oscillations"
+    const val Other = "Other"
     const val Particles = "Particles"
+    const val PolarCoords = "Polar Coordinates"
     const val Slides = "Creative Coding '23"
     const val Texturing = "Texturing"
 }
 
 val TopLevelScreens = listOf(
+    NestedNavScreen(
+        title = Slides,
+        description = "Specific Examples from the Creative Coding Compose '23 talk"
+    ) { onNavigate -> slidesGraph(onNavigate) },
     NestedNavScreen(
         title = Grids,
         description = "Groovy grids!"
@@ -122,9 +137,13 @@ val TopLevelScreens = listOf(
         description = "Basic particle systems"
     ) { onNavigate -> particlesGraph(onNavigate) },
     NestedNavScreen(
-        title = Slides,
-        description = "Specific Examples from the Creative Coding Compose '23 talk"
-    ) { onNavigate -> slidesGraph(onNavigate) },
+        title = PolarCoords,
+        description = "Polar coordinates + noise"
+    ) { onNavigate -> polarCoordsGraph(onNavigate) },
+    NestedNavScreen(
+        title = Other,
+        description = "Other experiences"
+    ) { onNavigate -> otherGraph(onNavigate) },
     NestedNavScreen(
         title = ImageSampling,
         description = "Sampling input images"
@@ -326,3 +345,29 @@ fun NavGraphBuilder.particlesGraph(onNavigate: (Screen) -> Unit) {
     nestedContent(onNavigate, screens = ParticlesScreens, home = Particles)
 }
 //endregion
+
+//region PolarCoords
+private val PolarCoordsScreens = listOf(
+    DestinationScreen(title = "PolygonsColor") { PolygonsColor() },
+    DestinationScreen(title = "PolygonsSimple") { PolygonsSimple() },
+    DestinationScreen(title = "PolygonsComplex") { PolygonsComplex() },
+    DestinationScreen(title = "BlobbyLoop") { BlobbyLoop() },
+    DestinationScreen(title = "Blobby") { Blobby() },
+)
+
+fun NavGraphBuilder.polarCoordsGraph(onNavigate: (Screen) -> Unit) {
+    nestedContent(onNavigate, screens = PolarCoordsScreens, home = PolarCoords)
+}
+//endregion
+
+//region Other
+private val OtherScreens = listOf(
+    DestinationScreen(title = "Matrix Rain") { MatrixRain() },
+    DestinationScreen(title = "Starfield") { Starfield() },
+)
+
+fun NavGraphBuilder.otherGraph(onNavigate: (Screen) -> Unit) {
+    nestedContent(onNavigate, screens = OtherScreens, home = Other)
+}
+//endregion
+

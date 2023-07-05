@@ -12,6 +12,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -88,7 +89,7 @@ fun ImageSampling() {
  */
 @Composable
 private fun Image(imageBitmap: ImageBitmap, modifier: Modifier = Modifier) {
-    var offsetY by remember { mutableStateOf(TilesX) }
+    var offsetY by remember { mutableFloatStateOf(TilesX) }
 
     val pixelMap = imageBitmap.toPixelMap(
         width = imageBitmap.width, height = imageBitmap.height

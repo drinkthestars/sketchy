@@ -5,3 +5,6 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun primarySketchColor() = MaterialTheme.colorScheme.onBackground
+
+@Composable
+fun secondarySketchColor() = MaterialTheme.colorScheme.background
