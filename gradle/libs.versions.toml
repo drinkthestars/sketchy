@@ -1,6 +1,6 @@
 [versions]
 accompanist= "0.31.3-beta"
-android-gradle-plugin = "8.0.2"
+android-gradle-plugin = "8.4.0"
 androidx-activity-compose = "1.7.2"
 androidx-appcompat = "1.6.1"
 androidx-corektx = "1.10.1"

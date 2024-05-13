@@ -1,6 +1,7 @@
 package com.goofy.goober.sketchy
 
 import androidx.navigation.NavGraphBuilder
+import com.goofy.goober.sketchy.HomeScreens.Audio
 import com.goofy.goober.sketchy.HomeScreens.CanvasDrawing
 import com.goofy.goober.sketchy.HomeScreens.CanvasRedrawing
 import com.goofy.goober.sketchy.HomeScreens.DrawingShapes
@@ -14,6 +15,13 @@ import com.goofy.goober.sketchy.HomeScreens.Particles
 import com.goofy.goober.sketchy.HomeScreens.PolarCoords
 import com.goofy.goober.sketchy.HomeScreens.Slides
 import com.goofy.goober.sketchy.HomeScreens.Texturing
+import com.goofy.goober.sketchy.audio.BeatVisualizationScreen
+import com.goofy.goober.sketchy.audio.Blobby
+import com.goofy.goober.sketchy.audio.BlobbyViz
+import com.goofy.goober.sketchy.audio.Fun
+import com.goofy.goober.sketchy.audio.Histogram
+import com.goofy.goober.sketchy.audio.Oscilloscope
+import com.goofy.goober.sketchy.audio.Shaders
 import com.goofy.goober.sketchy.other.MatrixRain
 import com.goofy.goober.sketchy.other.Starfield
 import com.goofy.goober.sketchy.scaffolding.DestinationScreen
@@ -28,7 +36,6 @@ import com.goofy.goober.sketchy.screens.Polygons
 import com.goofy.goober.sketchy.screens.PolygonsInteractive
 import com.goofy.goober.sketchy.screens.PolygonsTouchInteractive
 import com.goofy.goober.sketchy.screens.Quads
-import com.goofy.goober.sketchy.screens.slides.StatefulCanvasBlobs
 import com.goofy.goober.sketchy.screens.TexturingHexagons
 import com.goofy.goober.sketchy.screens.TexturingInteractivePolygons
 import com.goofy.goober.sketchy.screens.Triangles
@@ -43,6 +50,7 @@ import com.goofy.goober.sketchy.screens.slides.Generate
 import com.goofy.goober.sketchy.screens.slides.GeneratePositions
 import com.goofy.goober.sketchy.screens.slides.GenerateRandomly
 import com.goofy.goober.sketchy.screens.slides.OutOfBoxShapes
+import com.goofy.goober.sketchy.screens.slides.StatefulCanvasBlobs
 import com.goofy.goober.sketchy.screens.slides.TransformWithTexture
 import com.goofy.goober.sketchy.temp.dots.BasicGrid
 import com.goofy.goober.sketchy.temp.dots.Dot2DNoiseRadius
@@ -80,8 +88,6 @@ import com.goofy.goober.sketchy.temp.particles.Attractor
 import com.goofy.goober.sketchy.temp.particles.Constellation
 import com.goofy.goober.sketchy.temp.particles.FlowField
 import com.goofy.goober.sketchy.temp.particles.RasterizeAttractor
-import com.goofy.goober.sketchy.temp.polar.Blobby
-import com.goofy.goober.sketchy.temp.polar.BlobbyLoop
 import com.goofy.goober.sketchy.temp.polar.PolygonsColor
 import com.goofy.goober.sketchy.temp.polar.PolygonsComplex
 import com.goofy.goober.sketchy.temp.polar.PolygonsSimple
@@ -90,6 +96,7 @@ object HomeScreens {
     const val Home = "Sketch"
     const val CanvasDrawing = "Basic Canvas Drawing"
     const val CanvasRedrawing = "Redrawing"
+    const val Audio = "Audio"
     const val Grids = "Dippin' Dots"
     const val DrawingShapes = "Shapes"
     const val DrawingShapesInteractive = "Interactive Shapes"
@@ -105,9 +112,9 @@ object HomeScreens {
 
 val TopLevelScreens = listOf(
     NestedNavScreen(
-        title = Slides,
-        description = "Specific Examples from the Creative Coding Compose '23 talk"
-    ) { onNavigate -> slidesGraph(onNavigate) },
+        title = Audio,
+        description = "Audio"
+    ) { onNavigate -> audioGraph(onNavigate) },
     NestedNavScreen(
         title = Grids,
         description = "Groovy grids!"
@@ -156,6 +163,10 @@ val TopLevelScreens = listOf(
         title = Texturing,
         description = "Adding textures with shaders"
     ) { onNavigate -> texturingGraph(onNavigate) },
+    NestedNavScreen(
+        title = Slides,
+        description = "Specific Examples from the Creative Coding Compose '23 talk"
+    ) { onNavigate -> slidesGraph(onNavigate) }
 )
 
 //region Shapes
@@ -322,6 +333,21 @@ fun NavGraphBuilder.gridsGraph(onNavigate: (Screen) -> Unit) {
 }
 //endregion
 
+
+//region Audio
+fun NavGraphBuilder.audioGraph(onNavigate: (Screen) -> Unit) {
+    nestedContent(onNavigate, screens = AudioScreens, home = Audio)
+}
+private val AudioScreens = listOf(
+    DestinationScreen(title = "Oscilloscope") { Oscilloscope() },
+    DestinationScreen(title = "Histogram") { Histogram() },
+    DestinationScreen(title = "Blobby") { BlobbyViz() },
+    DestinationScreen(title = "Shaders") { Shaders() },
+    DestinationScreen(title = "Fun") { BeatVisualizationScreen() }
+)
+//endregion
+
+
 //region Oscillations
 private val OscillationsScreens = listOf(
     DestinationScreen(title = "ParametricHarmonic") { ParametricHarmonic() },
@@ -351,8 +377,8 @@ private val PolarCoordsScreens = listOf(
     DestinationScreen(title = "PolygonsColor") { PolygonsColor() },
     DestinationScreen(title = "PolygonsSimple") { PolygonsSimple() },
     DestinationScreen(title = "PolygonsComplex") { PolygonsComplex() },
-    DestinationScreen(title = "BlobbyLoop") { BlobbyLoop() },
-    DestinationScreen(title = "Blobby") { Blobby() },
+//    DestinationScreen(title = "BlobbyViz") { BlobbyLoop() },
+//    DestinationScreen(title = "Blobby") { Blobby() },
 )
 
 fun NavGraphBuilder.polarCoordsGraph(onNavigate: (Screen) -> Unit) {
