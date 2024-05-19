@@ -1,5 +1,6 @@
 package com.goofy.goober.sketchy
 
+import androidx.compose.material3.Text
 import androidx.navigation.NavGraphBuilder
 import com.goofy.goober.sketchy.HomeScreens.Audio
 import com.goofy.goober.sketchy.HomeScreens.CanvasDrawing
@@ -15,13 +16,11 @@ import com.goofy.goober.sketchy.HomeScreens.Particles
 import com.goofy.goober.sketchy.HomeScreens.PolarCoords
 import com.goofy.goober.sketchy.HomeScreens.Slides
 import com.goofy.goober.sketchy.HomeScreens.Texturing
-import com.goofy.goober.sketchy.audio.BeatVisualizationScreen
-import com.goofy.goober.sketchy.audio.Blobby
 import com.goofy.goober.sketchy.audio.BlobbyViz
-import com.goofy.goober.sketchy.audio.Fun
 import com.goofy.goober.sketchy.audio.Histogram
 import com.goofy.goober.sketchy.audio.Oscilloscope
 import com.goofy.goober.sketchy.audio.Shaders
+import com.goofy.goober.sketchy.audio.VisualizerBasics
 import com.goofy.goober.sketchy.other.MatrixRain
 import com.goofy.goober.sketchy.other.Starfield
 import com.goofy.goober.sketchy.scaffolding.DestinationScreen
@@ -339,11 +338,12 @@ fun NavGraphBuilder.audioGraph(onNavigate: (Screen) -> Unit) {
     nestedContent(onNavigate, screens = AudioScreens, home = Audio)
 }
 private val AudioScreens = listOf(
+    DestinationScreen(title = "VisualizerBasics") { VisualizerBasics() },
     DestinationScreen(title = "Oscilloscope") { Oscilloscope() },
     DestinationScreen(title = "Histogram") { Histogram() },
     DestinationScreen(title = "Blobby") { BlobbyViz() },
     DestinationScreen(title = "Shaders") { Shaders() },
-    DestinationScreen(title = "Fun") { BeatVisualizationScreen() }
+    DestinationScreen(title = "Fun") { Text(text = "Coming Soon") }
 )
 //endregion
 

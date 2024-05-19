@@ -1,24 +1,23 @@
 [versions]
 accompanist= "0.31.3-beta"
-android-gradle-plugin = "8.4.0"
-androidx-activity-compose = "1.7.2"
+android-gradle-plugin = "8.3.2"
+androidx-activity-compose = "1.9.0"
 androidx-appcompat = "1.6.1"
-androidx-corektx = "1.10.1"
-androidx-lifecycle = "2.6.1"
-androidx-navigation = "2.7.0-alpha01"
-androidx-hilt-navigation-compose = "1.1.0-alpha01"
+androidx-corektx = "1.13.1"
+androidx-lifecycle = "2.8.0"
+androidx-navigation = "2.7.7"
 
 build-tools = "30.0.3"
 
-compileSdk = "33"
-compose = "1.5.0-beta01"
+compileSdk = "34"
+compose = "1.7.0-beta01"
 composeCompiler = "1.4.7"
 kotlin = "1.8.21"
 coroutines = "1.7.1"
 glm = "0.9.9.1-4"
 
-material = "1.9.0"
-compose-material3 = "1.2.0-alpha02"
+material = "1.12.0"
+compose-material3 = "1.2.1"
 
 [libraries]
 compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "compose" }
@@ -48,7 +47,7 @@ kotlin-graphics-glm = { module = "kotlin.graphics:glm", version.ref = "glm" }
 
 google-android-material = { module = "com.google.android.material:material", version.ref = "material" }
 google-accompanist-systemui = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
-
+google-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
@@ -80,6 +79,7 @@ androidx = [
 google = [
     "google-android-material",
     "google-accompanist-systemui",
+    "google-accompanist-permissions"
 ]
 
 kotlin = [

@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.goofy.goober.style"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 33

@@ -61,6 +61,17 @@ dependencies {
     implementation(project(":shaders"))
     implementation(project(":sketch"))
     implementation(project(":style"))
+
+    // Exoplayer dependencies
+    implementation("com.google.android.exoplayer:exoplayer:2.14.1")
+
+//    implementation("androidx.media3:media3-exoplayer:1.3.1")
+//    implementation("androidx.media3:media3-exoplayer-dash:1.3.1")
+//    implementation("androidx.media3:media3-ui:1.3.1")
+    implementation("com.github.paramsen:noise:2.0.0")
+
+
+
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.compose)
     implementation(libs.bundles.kotlin)

@@ -27,6 +27,16 @@ fun Offset.distanceTo(offset2: Offset): Float {
     return sqrt(deltaX * deltaX + deltaY * deltaY)
 }
 
+fun mapInt(
+    value: Int,
+    fromLow: Int,
+    fromHigh: Int,
+    toLow: Int,
+    toHigh: Int
+): Int {
+    return toLow + (value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow)
+}
+
 fun map(
     value: Float,
     sourceMin: Float,

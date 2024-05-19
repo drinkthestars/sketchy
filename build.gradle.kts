@@ -12,6 +12,7 @@ buildscript {
 allprojects {
     repositories {
         google()
+        maven("https://jitpack.io")
         mavenCentral()
         maven("https://raw.githubusercontent.com/kotlin-graphics/mary/master")
     }

@@ -1,8 +1,14 @@
 package com.goofy.goober.style
 
+import android.Manifest
+import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration.UI_MODE_NIGHT_MASK
+import android.net.Uri
+import android.provider.Settings
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -16,6 +22,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -24,6 +31,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowRight
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults.elevatedCardElevation
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
@@ -33,11 +41,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
+import androidx.compose.material3.Checkbox as Material3Checkbox
 
 val LargeCardShape = RoundedCornerShape(12.dp)
 
@@ -137,7 +154,7 @@ fun SmallCard(
 }
 
 @Composable
-fun ShadyContainer(
+fun SketchyContainer(
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit,
     controls: @Composable ColumnScope.() -> Unit
@@ -182,25 +199,56 @@ fun ShadyContainer(
     }
 }
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_MASK)
-fun ShadyContainerPreview() {
-    SketchyTheme {
-        ShadyContainer(
-            content = {
-                Box(
-                    Modifier
-                        .fillMaxSize()
-                        .background(color = MaterialTheme.colorScheme.surfaceVariant)
-                )
-            },
-            controls = {
-                Slider()
-                Spacer(modifier = Modifier.height(24.dp))
-                Slider()
+fun MicPermContainer(
+    modifier: Modifier = Modifier,
+    grantedContent: @Composable () -> Unit
+) {
+
+    val micPermStatus = rememberPermissionState(
+        Manifest.permission.RECORD_AUDIO
+    )
+
+    if (micPermStatus.status.isGranted) {
+        grantedContent()
+    } else {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(Sizing.Six),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            LaunchedEffect(micPermStatus.status.shouldShowRationale) {
+                if (!micPermStatus.status.shouldShowRationale) {
+                    micPermStatus.launchPermissionRequest()
+                }
             }
-        )
+            if (micPermStatus.status.shouldShowRationale) {
+                val context = LocalContext.current
+                Text(
+                    text =
+                    "The audio examples require permission to access audio playback and recording",
+                    modifier = Modifier.padding(Sizing.Five),
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.size(Sizing.Five))
+                Button(onClick = { context.openAppSystemSettings() }) {
+                    Text("Enable in Settings")
+                }
+            }
+        }
     }
+}
+
+private fun Context.openAppSystemSettings() {
+    startActivity(
+        Intent().apply {
+            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+            data = Uri.fromParts("package", packageName, null)
+        }
+    )
 }
 
 @Composable
@@ -267,6 +315,81 @@ fun IntSlider(
     }
 }
 
+@Composable
+fun MenuItem(
+    modifier: Modifier = Modifier,
+    label: String,
+    value: String,
+    onExpansionClick: () -> Unit
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.labelSmall,
+            modifier = Modifier
+                .outline()
+                .clickable { onExpansionClick() }
+                .padding(4.dp)
+        )
+    }
+}
+
+@Composable
+fun Checkbox(
+    modifier: Modifier = Modifier,
+    label: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Material3Checkbox(checked = checked, onCheckedChange = onCheckedChange)
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+        )
+        Spacer(modifier = Modifier.width(Sizing.Four))
+    }
+}
+
+
+fun Modifier.outline(): Modifier = composed {
+    this.border(
+        width = 1.dp,
+        color = MaterialTheme.colorScheme.outline,
+        shape = RoundedCornerShape(4.dp)
+    )
+}
+
+@Composable
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_MASK)
+fun SketchyContainerPreview() {
+    SketchyTheme {
+        SketchyContainer(
+            content = {
+                Box(
+                    Modifier
+                        .fillMaxSize()
+                        .background(color = MaterialTheme.colorScheme.surfaceVariant)
+                )
+            },
+            controls = {
+                Slider()
+                Spacer(modifier = Modifier.height(24.dp))
+                Slider()
+            }
+        )
+    }
+}
 
 @Composable
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_MASK)
@@ -312,3 +435,4 @@ fun LargeCardColumnPreview() {
         }
     }
 }
+
