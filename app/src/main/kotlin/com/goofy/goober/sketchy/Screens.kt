@@ -17,6 +17,7 @@ import com.goofy.goober.sketchy.HomeScreens.PolarCoords
 import com.goofy.goober.sketchy.HomeScreens.Slides
 import com.goofy.goober.sketchy.HomeScreens.Texturing
 import com.goofy.goober.sketchy.audio.BlobbyViz
+import com.goofy.goober.sketchy.audio.Fun
 import com.goofy.goober.sketchy.audio.Histogram
 import com.goofy.goober.sketchy.audio.Oscilloscope
 import com.goofy.goober.sketchy.audio.Shaders
@@ -343,7 +344,7 @@ private val AudioScreens = listOf(
     DestinationScreen(title = "Histogram") { Histogram() },
     DestinationScreen(title = "Blobby") { BlobbyViz() },
     DestinationScreen(title = "Shaders") { Shaders() },
-    DestinationScreen(title = "Fun") { Text(text = "Coming Soon") }
+    DestinationScreen(title = "Fun") { Fun() }
 )
 //endregion
 

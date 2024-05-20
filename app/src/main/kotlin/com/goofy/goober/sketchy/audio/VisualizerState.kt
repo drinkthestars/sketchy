@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import glm_.func.common.abs
 import kotlin.math.abs
-import kotlin.math.absoluteValue
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.hypot
@@ -14,13 +14,13 @@ import kotlin.math.hypot
 enum class VizType {
     FlashingLines,
     HorizPoints,
+    Rects,
+    Mirrored,
     PolarPoints,
+    Polarlines,
     RadiateSimple,
     RadiateFixedSizePoints,
-    RadiateDynamicSizePoints,
-    Polarlines,
-    Rects,
-    Mirrored
+    RadiateDynamicSizePoints
 }
 
 enum class SmoothingType {
@@ -40,14 +40,12 @@ class VisualizerState {
 
     // FFT
     var rawFFt = ByteArray(0)
+    var fftAvg = 0f
     var lastBandMagnitudes: FloatArray? = null
     var fftBands = FloatArray(0)
-    var maxNoise = 0f
 
     // Amplitude
-    val isBeat get() = beatAmp > 50f
     var lastAmp = 0f
-    var beatAmp = 0f
 
     fun setCaptureListener(
         smoothingType: SmoothingType,
@@ -146,7 +144,7 @@ private fun Visualizer.captureListener(
                 samplingRate: Int
             ) {
                 state.rawFFt = fft
-                state.maxNoise = fft.average().toFloat().absoluteValue * 30f
+                state.fftAvg = getAverage(fft)
 
                 val bandMagnitudes = calculateFftMagnitudes(samplingRate, fft)
 
@@ -171,14 +169,21 @@ private fun Visualizer.captureListener(
                         state.lastBandMagnitudes = smoothedBandMagnitudes
                     }
                 }
-
-                state.beatAmp = bandMagnitudes[0] + bandMagnitudes[1] + bandMagnitudes[2]
             }
         },
         /* rate = */ Visualizer.getMaxCaptureRate(),
         /* waveform = */ true,
         /* fft = */ enableFftCapture
     )
+}
+
+private fun getAverage(fft: ByteArray): Float {
+    if (fft.isEmpty()) return 0f
+    var avg = 0f
+    for (i in 0 until fft.size / 2) {
+        avg += fft[i].abs
+    }
+    return avg / (fft.size / 2)
 }
 
 private fun calculateFftMagnitudes(samplingRate: Int, fft: ByteArray): FloatArray {

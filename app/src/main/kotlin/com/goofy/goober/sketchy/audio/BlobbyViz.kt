@@ -23,6 +23,7 @@ import glm_.vec3.Vec3
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlin.math.PI
+import kotlin.math.absoluteValue
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -62,13 +63,13 @@ fun BlobbyViz() {
             translate((width / 2f), (height / 2f)) {
                 var xOffset: Float
                 var yOffset: Float
-
+                val maxNoise = state.fftAvg.absoluteValue * 30f
                 for (i in 0 until 360) {
                     val rad = i * toRad + time * 0.005f
 //                    xOffset = map(cos(rad + time * 10f), -1f, 1f, 0f, 5f + (time * 10f))
 //                    yOffset = map(sin(rad + time * 3f), -1f, 1f, 0f, 5f + (time * 10f))
-                    xOffset = map(cos(rad + time * 10f), -1f, 1f, 0f, state.maxNoise)
-                    yOffset = map(sin(rad + time * 3f), -1f, 1f, 0f, state.maxNoise)
+                    xOffset = map(cos(rad + time * 10f), -1f, 1f, 0f, maxNoise)
+                    yOffset = map(sin(rad + time * 3f), -1f, 1f, 0f, maxNoise)
                     val noise = glm.perlin(Vec3(x = xOffset, y = yOffset, z = time * 0.7f))
                     val r = map(noise, 0f, 1f, -30f, 30f) + (peak.mRms * -1f / 10f) + 100f
                     val x = r * cos(rad)

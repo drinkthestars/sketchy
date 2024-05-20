@@ -559,13 +559,6 @@ fun DrawScope.drawLinesFlashed2(
     val midY = size.height / 2  // Middle of the screen
     val maxHeight = size.height * 0.15f  // 15% of the screen height above and below the midline
 
-    drawLine(
-        color = Color.Red,
-        start = Offset(0f, midY),
-        end = Offset(size.width, midY),
-        strokeWidth = 2f
-    )
-
     for (i in 0 until waveform.size - 1) {
         val currentDataPoint = waveform[i]
         val nextDataPoint = waveform[i + 1]
@@ -601,7 +594,7 @@ fun DrawScope.drawCirclePoints(
 
         val points = mutableListOf<Offset>()
 
-        val radiusOffset = if (state.isBeat) 20f else 0f
+        val radiusOffset = if (state.fftAvg > 2.2f) 20f else 0f
 
         drawArcPoints(vertices, waveform, points, invert = false, radiusOffset = radiusOffset)
         drawArcPoints(vertices, waveform, points, invert = true, radiusOffset = radiusOffset)
@@ -650,7 +643,7 @@ fun DrawScope.drawCirclePath(
 
         path.reset()
 
-        val radiusOffset = if (state.isBeat) 20f else 0f
+        val radiusOffset = if (state.fftAvg > 2.5f) 25f else 10f
 
         drawArcPath(vertices, waveform, path, invert = false, radiusOffset = radiusOffset)
         drawArcPath(vertices, waveform, path, invert = true, radiusOffset = radiusOffset)
@@ -685,7 +678,7 @@ private fun drawArcPath(
     for (i in 0 until vertices) {
         val rad = i * glm.PIf / 180f
         val index = mapInt(i, 0, vertices, 0, (waveform.size - 1))
-        val radius = mapInt(waveform[index].toInt(), -128, 127, 250, 350) + radiusOffset
+        val radius = mapInt(waveform[index].toInt(), -128, 127, 250, 400) + radiusOffset
 
         val x = radius * invertMultiplier * sin(rad)
         val y = radius * cos(rad)
@@ -708,7 +701,7 @@ private fun drawArcPoints(
     for (i in 0 until vertices) {
         val rad = i * glm.PIf / 180f
         val index = mapInt(i, 0, vertices, 0, (waveform.size - 1))
-        val radius = mapInt(waveform[index].toInt(), -128, 127, 250, 350) + radiusOffset
+        val radius = mapInt(waveform[index].toInt(), -128, 127, 250, 400) + radiusOffset
 
         val x = radius * invertMultiplier * sin(rad)
         val y = radius * cos(rad)
@@ -725,4 +718,4 @@ private val dullPaint = android.graphics.Paint().apply {
     strokeWidth = 3f
 }
 
-private val DefaultStroke = Stroke(2f)
+private val DefaultStroke = Stroke(5f)
