@@ -1,5 +1,6 @@
 package com.goofy.goober.sketchy.audio
 
+import android.graphics.Paint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,12 +18,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.Stroke
 import com.goofy.goober.sketchy.Sketch
 import com.goofy.goober.style.Checkbox
 import com.goofy.goober.style.MenuItem
 import com.goofy.goober.style.Sizing
-import kotlin.math.abs
 
 @Composable
 fun Oscilloscope(
@@ -39,7 +38,7 @@ fun Oscilloscope(
 
     val state = rememberVisualizerState(
         smoothingType = smoothingType.value,
-        enableFftCapture = false
+        enableFftCapture = enableFftCapture.value
     )
 
     Column(modifier = modifier.fillMaxSize()) {
@@ -119,6 +118,7 @@ private fun Content(
     useBeatDetection: Boolean
 ) {
     val path = remember { Path() }
+    val paint = remember { Paint() }
     Sketch(
         modifier = modifier
             .fillMaxSize(),
@@ -126,25 +126,25 @@ private fun Content(
             val waveform = state.waveform
             if (waveform.isNotEmpty()) {
                 when (vizType) {
-                    VizType.FlashingLines -> drawLinesFlashed2(state, useBeatDetection)
-                    VizType.HorizPoints -> drawPoints(state, useBeatDetection)
-                    VizType.PolarPoints -> drawCirclePoints(state, useBeatDetection)
-                    VizType.Polarlines -> drawCirclePath(state, path, useBeatDetection)
-                    VizType.Rects -> drawRects(state, useBeatDetection)
+                    VizType.FlashingLines -> drawFlashingLines(state, useBeatDetection)
+                    VizType.MirroredLines -> drawMirrored(state, useBeatDetection, paint)
+                    VizType.PolarPoints -> drawPolarPoints(state, useBeatDetection, time)
+                    VizType.PolarPath -> drawPolarPath(state, path, useBeatDetection)
                     VizType.RadiateFixedSizePoints -> drawRadiatePoints(
                         state,
                         time,
-                        useBeatDetection
+                        useBeatDetection,
+                        paint
                     )
 
                     VizType.RadiateDynamicSizePoints -> drawRadiatePointsVariableSize(
                         state,
                         time,
-                        useBeatDetection
+                        useBeatDetection,
+                        paint
                     )
 
-                    VizType.RadiateSimple -> drawRadiate(state, time, useBeatDetection)
-                    VizType.Mirrored -> drawMirroredWaveform(state, useBeatDetection)
+                    VizType.RadiateSimple -> drawRadiate(state, time, paint, useBeatDetection)
                 }
             }
 

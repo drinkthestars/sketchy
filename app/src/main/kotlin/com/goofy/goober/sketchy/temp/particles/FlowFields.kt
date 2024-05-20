@@ -80,7 +80,6 @@ private fun FlowFieldSketch(modifier: Modifier = Modifier) {
                 Snapshot.withMutableSnapshot {
                     width.value = size.width.toFloat()
                     height.value = size.height.toFloat()
-                    Log.i("WARP", "size changed: $size")
                     resolution.value = size.width.toFloat() / 15
                     flowField.value = flowField(
                         padding = padding,

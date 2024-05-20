@@ -35,60 +35,50 @@ fun Histogram(
     )
 }
 
-fun DrawScope.drawFftAvg(
-    state: VisualizerState
-) {
-    println("state.fftAvg: ${state.fftAvg}")
-    drawRect(
-        brush = Brush.linearGradient(
-            colors = listOf(Color.Transparent, Color.White),
-            start = Offset(size.width/2f, size.height/2f),
-            end = Offset(size.width/2f, size.height/2f + 100)
-        ),
-        alpha = if (state.fftAvg > 2.5f) 0.1f else 0.4f,
-        style = Fill,
-        colorFilter = null,
-        blendMode = BlendMode.SrcOver
-    )
-}
-
 fun DrawScope.drawHistogram(state: VisualizerState) {
+
+    println("WARP - average fft: ${state.fftAvg}")
+
     val fftBands = state.fftBands
     val barSpacing = 5f
-    val barWidth = (size.width / fftBands.size) - barSpacing
-    val maxBarHeight = size.height / 2  // Maximum height a bar can reach
-    val barHeightOffset = 100f
-    // Create a fixed vertical gradient brush
-    val brush = Brush.verticalGradient(
-        colors = listOf(Color.Red, Color(0xFFFFA500), Color.Yellow, Color.Green),
-        startY = size.height - maxBarHeight + 150, // Start from the bottom of the maximum bar height
-        endY = size.height // End at the bottom of the canvas
-    )
+    val segmentHeight = 20f  // Height of each segment
+    val maxBarHeight = size.height * 0.75  // Maximum height a bar can reach
+    val numSegments = (maxBarHeight / (segmentHeight + barSpacing)).toInt()
+
+    // Calculate the width of each segment
+    val segmentWidth = (size.width - (fftBands.size - 1) * barSpacing) / fftBands.size
+    val barSize = Size(width = segmentWidth, height = segmentHeight)
+
+    val colors = listOf(Color.Green, Color.Yellow, Color(0xFFFFA500), Color.Red)
 
     for (i in fftBands.indices) {
-        // normalize magnitude to [0, 1]
-        val normalizedMagnitude = fftBands[i].abs / 179.6f
+        val normalizedMagnitude = fftBands[i].abs/ 100f
+        val activeSegments = (normalizedMagnitude * numSegments).toInt()
 
-        val heightOffset = if (state.fftAvg > 2.5f) 10f else 15f
-        val barHeight =  normalizedMagnitude * maxBarHeight + barHeightOffset + heightOffset
+        val offsetX = i * (segmentWidth + barSpacing)
+        var offsetY = size.height - segmentHeight
 
-        // Calculate the top left position and size of each bar
-        val offsetX = (i * barWidth) + (i * barSpacing)
-        val offsetY = size.height - barHeight
-        val topLeft = Offset(x = offsetX, y = offsetY)
-        val barSize = Size(width = barWidth, height = barHeight)
+        for (segment in 0 until numSegments) {
+            val topLeft = Offset(x = offsetX, y = offsetY - (segment * (segmentHeight + barSpacing)))
 
-        // Draw the bar
-        drawRect(
-            brush = brush,
-            topLeft = topLeft,
-            size = barSize,
-            alpha = if (state.fftAvg > 2.5f) 1f else 0.5f,
-            style = Fill,
-            colorFilter = null,
-            blendMode = BlendMode.SrcOver
-        )
+            // Determine the color based on the segment position
+            val colorIndex = (segment * colors.size) / numSegments
+            val color = colors.getOrElse(colorIndex) { Color.Red }
+
+            // Determine the alpha value
+            val alpha = if (segment < activeSegments) 1f else 0.1f
+
+            // Draw the segment
+            drawRect(
+                color = color.copy(alpha = alpha),
+                topLeft = topLeft,
+                size = barSize,
+                style = Fill
+            )
+        }
     }
+
 }
+
 
 

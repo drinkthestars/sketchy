@@ -5,19 +5,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import com.goofy.goober.sketchy.PI
 import glm_.func.common.abs
 import kotlin.math.abs
+import kotlin.math.absoluteValue
 import kotlin.math.ceil
+import kotlin.math.cos
 import kotlin.math.floor
 import kotlin.math.hypot
 
 enum class VizType {
     FlashingLines,
-    HorizPoints,
-    Rects,
-    Mirrored,
+    MirroredLines,
     PolarPoints,
-    Polarlines,
+    PolarPath,
     RadiateSimple,
     RadiateFixedSizePoints,
     RadiateDynamicSizePoints
@@ -104,6 +105,7 @@ private fun createVisualizer() = Visualizer(/* audioSession = */ 0).apply {
     this.captureSize = Visualizer.getCaptureSizeRange()[1]
     enabled = true
     measurementMode = Visualizer.MEASUREMENT_MODE_PEAK_RMS
+    println("SKETCHY: Capture size: ${this.captureSize} | Max capture rate: ${Visualizer.getMaxCaptureRate()}")
 }
 
 private fun Visualizer.captureListener(
@@ -144,9 +146,8 @@ private fun Visualizer.captureListener(
                 samplingRate: Int
             ) {
                 state.rawFFt = fft
-                state.fftAvg = getAverage(fft)
 
-                val bandMagnitudes = calculateFftMagnitudes(samplingRate, fft)
+                val bandMagnitudes = calculateFftMagnitudes(samplingRate, fft, state)
 
                 when (smoothingType) {
                     SmoothingType.None -> {
@@ -177,31 +178,29 @@ private fun Visualizer.captureListener(
     )
 }
 
-private fun getAverage(fft: ByteArray): Float {
-    if (fft.isEmpty()) return 0f
-    var avg = 0f
-    for (i in 0 until fft.size / 2) {
-        avg += fft[i].abs
-    }
-    return avg / (fft.size / 2)
-}
-
-private fun calculateFftMagnitudes(samplingRate: Int, fft: ByteArray): FloatArray {
+private fun calculateFftMagnitudes(samplingRate: Int, fft: ByteArray, state: VisualizerState): FloatArray {
     // Converting it to hertz
     val samplingRateInHz = samplingRate / 1000
     // Considering half because the FFT contains real and imaginary parts interlaced
     val n = fft.size / 2
     val magnitudes = FloatArray(n + 1)
+    var sumMagnitude = 0f
 
     // Calculate magnitudes for each FFT bin
-    magnitudes[0] = abs(fft[0].toFloat())  // DC component
-    magnitudes[n] = abs(fft[1].toFloat())  // Nyquist frequency
+    magnitudes[0] = fft[0].toFloat().absoluteValue  // DC component
+//    magnitudes[n] = fft[1].toFloat().absoluteValue  // Nyquist frequency
+    sumMagnitude += abs(fft[0].toFloat())  // DC component (real only)
     for (k in 1 until n) {
         val i = 2 * k
         if (i + 1 < fft.size) {
-            magnitudes[k] = hypot(fft[i].toFloat(), fft[i + 1].toFloat())
+            val real = fft[i].toFloat().absoluteValue
+            val imag = fft[i + 1].toFloat().absoluteValue
+            magnitudes[k] = hypot(real, imag)
+            sumMagnitude += magnitudes[k]
         }
     }
+
+    state.fftAvg = sumMagnitude / n
 
     val bandMagnitudes = FloatArray(FreqBands.size) { 0f }
 

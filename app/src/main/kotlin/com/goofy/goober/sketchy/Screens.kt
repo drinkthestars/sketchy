@@ -1,6 +1,5 @@
 package com.goofy.goober.sketchy
 
-import androidx.compose.material3.Text
 import androidx.navigation.NavGraphBuilder
 import com.goofy.goober.sketchy.HomeScreens.Audio
 import com.goofy.goober.sketchy.HomeScreens.CanvasDrawing
@@ -17,7 +16,7 @@ import com.goofy.goober.sketchy.HomeScreens.PolarCoords
 import com.goofy.goober.sketchy.HomeScreens.Slides
 import com.goofy.goober.sketchy.HomeScreens.Texturing
 import com.goofy.goober.sketchy.audio.BlobbyViz
-import com.goofy.goober.sketchy.audio.Fun
+import com.goofy.goober.sketchy.audio.Spirals
 import com.goofy.goober.sketchy.audio.Histogram
 import com.goofy.goober.sketchy.audio.Oscilloscope
 import com.goofy.goober.sketchy.audio.Shaders
@@ -344,7 +343,7 @@ private val AudioScreens = listOf(
     DestinationScreen(title = "Histogram") { Histogram() },
     DestinationScreen(title = "Blobby") { BlobbyViz() },
     DestinationScreen(title = "Shaders") { Shaders() },
-    DestinationScreen(title = "Fun") { Fun() }
+    DestinationScreen(title = "Spirals") { Spirals() }
 )
 //endregion
 
