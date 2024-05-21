@@ -30,19 +30,26 @@ fun Histogram(
             .padding(32.dp),
         onDraw = {
 //            drawFftAvg(state)
+            drawCircle(
+                brush = Brush.radialGradient(
+                    colors = listOf(Color.Red, Color.Blue),
+                    center = Offset(size.width / 2, size.height / 2),
+                    radius = size.width / 2
+                ),
+                center = Offset(size.width / 2, size.height / 2),
+                radius = if (state.beatDetected) 100f else 20f,
+                blendMode = BlendMode.SrcOver
+            )
             drawHistogram(state)
         }
     )
 }
 
 fun DrawScope.drawHistogram(state: VisualizerState) {
-
-    println("WARP - average fft: ${state.fftAvg}")
-
     val fftBands = state.fftBands
     val barSpacing = 5f
     val segmentHeight = 20f  // Height of each segment
-    val maxBarHeight = size.height * 0.75  // Maximum height a bar can reach
+    val maxBarHeight = size.height / 2 // Maximum height a bar can reach
     val numSegments = (maxBarHeight / (segmentHeight + barSpacing)).toInt()
 
     // Calculate the width of each segment
@@ -77,7 +84,6 @@ fun DrawScope.drawHistogram(state: VisualizerState) {
             )
         }
     }
-
 }
 
 

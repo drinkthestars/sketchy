@@ -5,12 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import com.goofy.goober.sketchy.PI
-import glm_.func.common.abs
 import kotlin.math.abs
 import kotlin.math.absoluteValue
 import kotlin.math.ceil
-import kotlin.math.cos
 import kotlin.math.floor
 import kotlin.math.hypot
 
@@ -21,7 +18,9 @@ enum class VizType {
     PolarPath,
     RadiateSimple,
     RadiateFixedSizePoints,
-    RadiateDynamicSizePoints
+    RadiateDynamicSizePoints,
+    SpiralPoints,
+    SpiralLines
 }
 
 enum class SmoothingType {
@@ -30,9 +29,15 @@ enum class SmoothingType {
     EMA,
 }
 
+
+
 class VisualizerState {
 
     val visualizer: Visualizer = createVisualizer()
+    private val beatDetector = BeatDetector()
+
+    val beatDetected: Boolean
+        get() = beatDetector.beatDetected
 
     // Waveform smoothing
     var lastWaveform: ByteArray? = null
@@ -81,6 +86,8 @@ class VisualizerState {
             this@apply.release()
         }
     }
+
+    fun processWaveform(waveform: ByteArray) = beatDetector.processWaveform(waveform)
 }
 
 @Composable
@@ -105,7 +112,6 @@ private fun createVisualizer() = Visualizer(/* audioSession = */ 0).apply {
     this.captureSize = Visualizer.getCaptureSizeRange()[1]
     enabled = true
     measurementMode = Visualizer.MEASUREMENT_MODE_PEAK_RMS
-    println("SKETCHY: Capture size: ${this.captureSize} | Max capture rate: ${Visualizer.getMaxCaptureRate()}")
 }
 
 private fun Visualizer.captureListener(
@@ -137,6 +143,7 @@ private fun Visualizer.captureListener(
                         }
                     }
                     state.rawWaveform = it
+                    state.processWaveform(it)   // Beat detection
                 }
             }
 
@@ -146,8 +153,9 @@ private fun Visualizer.captureListener(
                 samplingRate: Int
             ) {
                 state.rawFFt = fft
+//                state.processFft(fft)
 
-                val bandMagnitudes = calculateFftMagnitudes(samplingRate, fft, state)
+                val bandMagnitudes = calculateFftMagnitudes(samplingRate, fft)
 
                 when (smoothingType) {
                     SmoothingType.None -> {
@@ -178,7 +186,7 @@ private fun Visualizer.captureListener(
     )
 }
 
-private fun calculateFftMagnitudes(samplingRate: Int, fft: ByteArray, state: VisualizerState): FloatArray {
+private fun calculateFftMagnitudes(samplingRate: Int, fft: ByteArray): FloatArray {
     // Converting it to hertz
     val samplingRateInHz = samplingRate / 1000
     // Considering half because the FFT contains real and imaginary parts interlaced
@@ -199,8 +207,6 @@ private fun calculateFftMagnitudes(samplingRate: Int, fft: ByteArray, state: Vis
             sumMagnitude += magnitudes[k]
         }
     }
-
-    state.fftAvg = sumMagnitude / n
 
     val bandMagnitudes = FloatArray(FreqBands.size) { 0f }
 
@@ -291,29 +297,6 @@ private fun fftAverageSmoothing(visualizerState: VisualizerState, newBandMagnitu
     visualizerState.fftBands = newBandMagnitudes
     visualizerState.lastBandMagnitudes = newBandMagnitudes
 }
-
-//fun windowedSmoothing(currentWaveform: ByteArray, pastWaveforms: List<ByteArray>, windowSize: Int = 5): ByteArray {
-//    val waveformCount = pastWaveforms.size
-//    val finalWaveform = ByteArray(currentWaveform.size) { 0 }
-//
-//    // Accumulate waveforms
-//    for (i in 0 until waveformCount) {
-//        for (j in currentWaveform.indices) {
-//            val pastWaveform: Byte = pastWaveforms[i][j]
-//            val wfCountByte = waveformCount.toByte()
-//            val oldFinalWf = finalWaveform[j]
-//            finalWaveform[j] = (oldFinalWf + (pastWaveform/wfCountByte).toByte()).toByte()
-//        }
-//    }
-//
-//    // Add the current waveform to the mix
-//    for (j in currentWaveform.indices) {
-//        finalWaveform[j] = ((finalWaveform[j] * (windowSize - 1) + currentWaveform[j]) / windowSize).toByte()
-//    }
-//
-//    return finalWaveform
-//}
-//
 
 private val FreqBands = arrayOf(
     0 to 63,

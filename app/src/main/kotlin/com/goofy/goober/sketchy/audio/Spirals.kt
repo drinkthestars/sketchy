@@ -46,20 +46,21 @@ fun Spirals(
         onDraw = { time ->
             translate(size.width / 2, size.height / 2) {
                 val radius = containerDiagonal()
-                val scalingFactor = baseScalingFactor * (1 - sin(time / 5 * 2 * PI + state.fftAvg/10) * 0.5f + 0.5f)
+                val addBeatDetection = if (state.beatDetected) 10f else 0f
+                val scalingFactor = baseScalingFactor * (1 - sin(time / 5 * 2 * PI + addBeatDetection) * 0.5f + 0.5f)
                 val scale = 1f + (time / 1000f) % 1f // Reset scale smoothly
                 scale(scale, scale) {
                     for (i in 0 until count) {
                         val factor = i.toFloat() / count.toFloat()
                         val angle = i.toFloat() / phi.toFloat() + time * 0.2f
 
-                        val pushout = if (state.fftAvg > 3.5f) 30f else 10f
+                        val pushout = if (state.beatDetected) 30f else 10f
                         val dist = factor * radius * scalingFactor + pushout
 
                         val x = cos(angle * PI * 2) * dist
                         val y = sin(angle * PI * 2) * dist
 
-                        val push = if (state.fftAvg > 3.5f) 8f else 3f
+                        val push = if (state.beatDetected) 8f else 3f
                         val sig = pow(cosNormalized(factor - time * push), 2f)
 
                         val hue = map(factor, 0f, 1f, 0f, 360f)

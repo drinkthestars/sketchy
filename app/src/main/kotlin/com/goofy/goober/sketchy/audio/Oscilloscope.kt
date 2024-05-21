@@ -1,5 +1,6 @@
 package com.goofy.goober.sketchy.audio
 
+import android.graphics.Color
 import android.graphics.Paint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -123,6 +124,10 @@ private fun Content(
         modifier = modifier
             .fillMaxSize(),
         onDraw = { time ->
+            paint.clearShadowLayer()
+            paint.color = Color.WHITE
+            paint.shader = null
+            paint.strokeWidth = 1f
             val waveform = state.waveform
             if (waveform.isNotEmpty()) {
                 when (vizType) {
@@ -145,14 +150,10 @@ private fun Content(
                     )
 
                     VizType.RadiateSimple -> drawRadiate(state, time, paint, useBeatDetection)
+                    VizType.SpiralPoints -> drawSpiral(state, time, paint, useBeatDetection)
+                    VizType.SpiralLines -> drawSpiralLines(state, time, paint, useBeatDetection)
                 }
             }
-
-//                drawLinesFlashed(vizState)
-//                drawPointsFlashed(vizState)
-//                drawLinesFlashed(vizState)
-//                drawSpiral2(waveform, time)
-//                drawSpiral(waveform, time)
         }
     )
 }

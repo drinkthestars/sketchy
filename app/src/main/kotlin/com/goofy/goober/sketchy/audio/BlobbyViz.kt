@@ -63,7 +63,7 @@ fun BlobbyViz() {
             translate((width / 2f), (height / 2f)) {
                 var xOffset: Float
                 var yOffset: Float
-                val maxNoise = state.fftAvg.absoluteValue * 30f
+                val maxNoise = state.rawFFt.average().absoluteValue.toFloat() * 30f
                 for (i in 0 until 360) {
                     val rad = i * toRad + time * 0.005f
 //                    xOffset = map(cos(rad + time * 10f), -1f, 1f, 0f, 5f + (time * 10f))

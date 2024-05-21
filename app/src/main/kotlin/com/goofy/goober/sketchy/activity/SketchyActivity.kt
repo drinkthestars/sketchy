@@ -5,6 +5,7 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
+import com.goofy.goober.sketchy.audio.Demo
 import com.goofy.goober.sketchy.scaffolding.SketchApp
 
 class SketchyActivity : ComponentActivity() {
@@ -15,6 +16,7 @@ class SketchyActivity : ComponentActivity() {
         drawContentBehindSystemBars()
         setContent {
             SketchApp()
+//            Demo()
         }
     }
 
