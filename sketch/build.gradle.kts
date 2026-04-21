@@ -1,8 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
 }
@@ -13,18 +12,13 @@ android {
 
     defaultConfig {
         minSdk = 33
-        targetSdk = 33
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            consumerProguardFiles("consumer-rules.pro")
         }
     }
     compileOptions {
@@ -57,4 +51,6 @@ dependencies {
     implementation(libs.bundles.google)
 
     debugImplementation(libs.compose.ui.tooling)
+
+    testImplementation(libs.junit)
 }

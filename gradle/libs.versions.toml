@@ -9,6 +9,7 @@ androidx-navigation = "2.8.9"
 
 compileSdk = "35"
 compose = "1.8.0-rc03"
+junit = "4.13.2"
 kotlin = "2.1.10"
 coroutines = "1.7.3"
 glm = "0.9.9.1-4"
@@ -46,6 +47,7 @@ google-android-material = { module = "com.google.android.material:material", ver
 google-accompanist-systemui = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
+junit = { module = "junit:junit", version.ref = "junit" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
 [bundles]
@@ -86,5 +88,6 @@ kotlin = [
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
+android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
