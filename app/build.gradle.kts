@@ -20,6 +20,11 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            // Restrict to arm64-v8a only — all Android 13+ devices are arm64.
+            // Drops x86/x86_64/armeabi-v7a libs from the debug APK (~50% size reduction).
+            ndk { abiFilters += "arm64-v8a" }
+        }
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
