@@ -41,11 +41,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          cd app/build/outputs/apk/debug && zip sketchy-debug.zip app-debug.apk && cd -
           gh release delete pr-${{ github.event.pull_request.number }}-debug --cleanup-tag --yes 2>/dev/null || true
           gh release create pr-${{ github.event.pull_request.number }}-debug \
             --title "PR #${{ github.event.pull_request.number }} debug build" \
             --prerelease \
-            app/build/outputs/apk/debug/app-debug.apk
+            app/build/outputs/apk/debug/sketchy-debug.zip
 
       - name: Comment APK link on PR
         if: github.event_name == 'pull_request'
@@ -53,7 +54,7 @@ jobs:
         with:
           script: |
             const marker = '📦 Debug APK'
-            const body = `${marker} — [tap to install](https://github.com/${context.repo.owner}/${context.repo.repo}/releases/download/pr-${context.issue.number}-debug/app-debug.apk)`
+            const body = `${marker} — [download zip](https://github.com/${context.repo.owner}/${context.repo.repo}/releases/download/pr-${context.issue.number}-debug/sketchy-debug.zip)`
             const comments = await github.rest.issues.listComments({
               issue_number: context.issue.number,
               owner: context.repo.owner,
