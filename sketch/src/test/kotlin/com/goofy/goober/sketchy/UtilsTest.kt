@@ -42,17 +42,16 @@ class UtilsTest {
 
     @Test
     fun `map remaps value between ranges`() {
-        // 50 in [0, 100] maps to midpoint of [0, 10] = 5
         assertEquals(5f, map(50f, 0f, 100f, 0f, 10f), 0.0001f)
     }
 
     @Test
-    fun `map clamps to destMin at source boundary`() {
+    fun `map returns destMin at source min`() {
         assertEquals(0f, map(0f, 0f, 100f, 0f, 10f), 0f)
     }
 
     @Test
-    fun `map clamps to destMax at source boundary`() {
+    fun `map returns destMax at source max`() {
         assertEquals(10f, map(100f, 0f, 100f, 0f, 10f), 0f)
     }
 

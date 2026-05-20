@@ -10,6 +10,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+      pull-requests: write
+
     steps:
       - uses: actions/checkout@v4
 
@@ -32,9 +36,43 @@ jobs:
       - name: Build debug APK
         run: ./gradlew assembleDebug
 
-      - name: Upload debug APK
-        uses: actions/upload-artifact@v4
+      - name: Publish APK to pre-release
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd app/build/outputs/apk/debug && zip sketchy-debug.zip app-debug.apk && cd -
+          gh release delete pr-${{ github.event.pull_request.number }}-debug --cleanup-tag --yes 2>/dev/null || true
+          gh release create pr-${{ github.event.pull_request.number }}-debug \
+            --title "PR #${{ github.event.pull_request.number }} debug build" \
+            --prerelease \
+            app/build/outputs/apk/debug/sketchy-debug.zip
+
+      - name: Comment APK link on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
         with:
-          name: sketchy-debug
-          path: app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 7
+          script: |
+            const marker = '📦 Debug APK'
+            const body = `${marker} — [download zip](https://github.com/${context.repo.owner}/${context.repo.repo}/releases/download/pr-${context.issue.number}-debug/sketchy-debug.zip)`
+            const comments = await github.rest.issues.listComments({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            const existing = comments.data.find(c => c.body.startsWith(marker))
+            if (existing) {
+              await github.rest.issues.updateComment({
+                comment_id: existing.id,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body,
+              })
+            } else {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body,
+              })
+            }

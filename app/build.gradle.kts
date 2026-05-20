@@ -13,18 +13,23 @@ android {
     defaultConfig {
         applicationId = "com.goofy.goober.sketchy"
         minSdk = 33
-        targetSdk = 33
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+        getByName("debug") {
+            // Restrict to arm64-v8a only — all Android 13+ devices are arm64.
+            // Drops x86/x86_64/armeabi-v7a libs from the debug APK (~50% size reduction).
+            ndk { abiFilters += "arm64-v8a" }
+        }
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android.txt"),
-                "consumer-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
             )
         }
     }
@@ -69,6 +74,5 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
         jvmTarget = "1.8"
         freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn"
-        freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.Experimental"
     }
 }

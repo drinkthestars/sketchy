@@ -1,7 +1,5 @@
 rootProject.name = "sketchy"
 
-include(":app")
-
 pluginManagement {
     repositories {
         gradlePluginPortal()
